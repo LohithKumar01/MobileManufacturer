@@ -1,9 +1,12 @@
 package com.example.MobileManufacturerProject.service;
 
+import com.example.MobileManufacturerProject.controller.MobileController;
 import com.example.MobileManufacturerProject.entity.Mobile;
 import com.example.MobileManufacturerProject.pojo.MobileDetails;
 import com.example.MobileManufacturerProject.repository.MobileRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ public class MobileService {
 
     private final MobileRepository mobileRepository;
 
+    Logger log = LoggerFactory.getLogger(MobileService.class);
+
     public MobileDetails getMobileById(Long id) {
         Mobile mobileById = mobileRepository.findById(id).orElse(null);
         if (mobileById == null) {
@@ -23,6 +28,7 @@ public class MobileService {
         }
         MobileDetails mobileDetails = new MobileDetails();
         BeanUtils.copyProperties(mobileById, mobileDetails);
+        log.info("Mobile Details Fetched Successfully.");
         return mobileDetails;
     }
 
@@ -34,6 +40,7 @@ public class MobileService {
             BeanUtils.copyProperties(mobile, mobileDetails);
             mobileDetailsList.add(mobileDetails);
         });
+        log.info("Mobile Details List Fetched Successfully.");
         return mobileDetailsList;
     }
 
@@ -49,6 +56,7 @@ public class MobileService {
 
         Mobile savedMobile = mobileRepository.save(createMobile);
         BeanUtils.copyProperties(savedMobile, mobileDetails);
+        log.info("New Mobile Created Successfully.");
         return mobileDetails;
     }
 
@@ -63,6 +71,7 @@ public class MobileService {
         Mobile updatedMobile = mobileRepository.save(mobileUpdateById);
         MobileDetails updatedMobileDetails = new MobileDetails();
         BeanUtils.copyProperties(updatedMobile, updatedMobileDetails);
+        log.info("Updated Mobile Details.");
         return updatedMobileDetails;
     }
 }

@@ -13,3 +13,10 @@ spring:
         use_sql_comments: true
 server:
   port: 8084
+#Logging level: ERROR. We can add TRACE, INFO, DEBUG, WARN.
+logging:
+  level:
+    root: ERROR
+    com.example: WARN
+  file:
+    name: manufacture-log
