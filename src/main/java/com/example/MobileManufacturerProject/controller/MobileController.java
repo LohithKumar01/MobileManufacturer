@@ -5,6 +5,8 @@ import com.example.MobileManufacturerProject.service.MobileService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,31 +19,31 @@ public class MobileController {
     Logger log = LoggerFactory.getLogger(MobileController.class);
 
     @GetMapping("/{id}")
-    public MobileDetails getMobileById(@PathVariable Long id) {
+    public ResponseEntity<MobileDetails> getMobileById(@PathVariable Long id) {
         log.error("Mobile Record Fetch Error From DB");
-        return mobileService.getMobileById(id);
+        return new ResponseEntity<>(mobileService.getMobileById(id), HttpStatus.OK);
     }
 
     @GetMapping("/list")
-    public List<MobileDetails> getMobileDetailsList() {
-        return mobileService.getMobileDetailsList();
+    public ResponseEntity<List<MobileDetails>> getMobileDetailsList() {
+        return new ResponseEntity<>(mobileService.getMobileDetailsList(), HttpStatus.OK);
     }
 
     @DeleteMapping("delete/{id}")
-    public String deleteMobileById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteMobileById(@PathVariable Long id) {
         mobileService.deleteMobile(id);
-        return "Record Deleted from DB";
+        return new ResponseEntity<>("Record Deleted from DB", HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public MobileDetails createMobile(@RequestBody MobileDetails mobileDetails) {
+    public ResponseEntity<MobileDetails> createMobile(@RequestBody MobileDetails mobileDetails) {
         log.error("Error Creating New Mobile.");
-        return mobileService.saveMobile(mobileDetails);
+        return new ResponseEntity<>(mobileService.saveMobile(mobileDetails), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public MobileDetails updateMobile(@RequestParam Long id, @RequestBody MobileDetails mobileDetails) {
+    public ResponseEntity<MobileDetails> updateMobile(@RequestParam Long id, @RequestBody MobileDetails mobileDetails) {
         log.error("Error Updating Mobile Details.");
-        return mobileService.updateMobile(id, mobileDetails);
+        return new ResponseEntity<>(mobileService.updateMobile(id, mobileDetails), HttpStatus.OK);
     }
 }
